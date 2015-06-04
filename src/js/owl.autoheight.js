@@ -69,7 +69,7 @@
 			heights = [],
 			maxheight = 0;
 
-		$.each(visible, function(index, item) {
+		Array.prototype.each(visible, function(item, index) {
 			heights.push($(item).height());
 		});
 

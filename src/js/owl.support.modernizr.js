@@ -31,7 +31,7 @@
 		throw new Error('Modernizr is not loaded.');
 	}
 
-	$.each([ 'cssanimations', 'csstransitions', 'csstransforms', 'csstransforms3d', 'prefixed' ], function(i, property) {
+	[ 'cssanimations', 'csstransitions', 'csstransforms', 'csstransforms3d', 'prefixed' ].each(function(property) {
 		if (typeof Modernizr[property] == 'undefined') {
 			throw new Error([ 'Modernizr "', property, '" is not loaded.' ].join(''));
 		}

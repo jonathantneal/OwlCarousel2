@@ -153,16 +153,16 @@
 			}
 		};
 
-		$.each([ 'onResize', 'onThrottledResize' ], (function(i, handler) {
+		[ 'onResize', 'onThrottledResize' ].each((function(handler) {
 			this._handlers[handler] = this[handler].bind(this);
 		}).bind(this));
 
-		$.each(Owl.Plugins, (function(key, plugin) {
+		Array.prototype.each.call(Owl.Plugins, (function(plugin, key) {
 			this._plugins[key.charAt(0).toLowerCase() + key.slice(1)]
 				= new plugin(this);
 		}).bind(this));
 
-		$.each(Owl.Workers, (function(priority, worker) {
+		Array.prototype.each.call(Owl.Workers, (function(worker, priority) {
 			this._pipe.push({
 				'filter': worker.filter,
 				'run': worker.run.bind(this)
@@ -502,7 +502,7 @@
 		if (!overwrites) {
 			settings = Object.assign({}, this.options);
 		} else {
-			$.each(overwrites, function(breakpoint) {
+			Array.prototype.each.call(overwrites, function(value, breakpoint) {
 				if (breakpoint <= viewport && breakpoint > match) {
 					match = Number(breakpoint);
 				}
@@ -838,7 +838,7 @@
 
 		if (!this.settings.freeDrag) {
 			// check closest item
-			$.each(coordinates, (function(index, value) {
+			Array.prototype.each.call(coordinates, (function(value, index) {
 				if (coordinate > value - pull && coordinate < value + pull) {
 					position = index;
 				} else if (this.op(coordinate, '<', value)
@@ -1473,7 +1473,7 @@
 		);
 
 		if (!this._supress[name]) {
-			$.each(this._plugins, function(name, plugin) {
+			Array.prototype.each.call(this._plugins, function(plugin, name) {
 				if (plugin.onTrigger) {
 					plugin.onTrigger(event);
 				}
@@ -1495,7 +1495,7 @@
 	 * @param name - The state name.
 	 */
 	Owl.prototype.enter = function(name) {
-		$.each([ name ].concat(this._states.tags[name] || []), (function(i, name) {
+		[ name ].concat(this._states.tags[name] || []).each((function(name, i) {
 			if (this._states.current[name] === undefined) {
 				this._states.current[name] = 0;
 			}
@@ -1509,7 +1509,7 @@
 	 * @param name - The state name.
 	 */
 	Owl.prototype.leave = function(name) {
-		$.each([ name ].concat(this._states.tags[name] || []), (function(i, name) {
+		[ name ].concat(this._states.tags[name] || []).each((function(name, i) {
 			this._states.current[name]--;
 		}).bind(this));
 	};
@@ -1554,7 +1554,7 @@
 	 * @param {Array.<String>} events - The events to suppress.
 	 */
 	Owl.prototype.suppress = function(events) {
-		$.each(events, (function(index, event) {
+		Array.prototype.each.call(events, (function(event, index) {
 			this._supress[event] = true;
 		}).bind(this));
 	};
@@ -1565,7 +1565,7 @@
 	 * @param {Array.<String>} events - The events to release.
 	 */
 	Owl.prototype.release = function(events) {
-		$.each(events, (function(index, event) {
+		Array.prototype.each.call(events, (function(event, index) {
 			delete this._supress[event];
 		}).bind(this));
 	};
@@ -1628,9 +1628,9 @@
 				data = new Owl(this, typeof option == 'object' && option);
 				$this.data('owl.carousel', data);
 
-				$.each([
+				[
 					'next', 'prev', 'to', 'destroy', 'refresh', 'replace', 'add', 'remove'
-				], function(i, event) {
+				].each(function(event, i) {
 					data.register({ type: Owl.Type.Event, name: event });
 					data.$element.on(event + '.owl.carousel.core', (function(e) {
 						if (e.namespace && e.relatedTarget !== this) {

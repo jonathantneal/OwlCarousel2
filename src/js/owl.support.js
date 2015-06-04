@@ -47,7 +47,7 @@
 		var result = false,
 			upper = property.charAt(0).toUpperCase() + property.slice(1);
 
-		$.each((property + ' ' + prefixes.join(upper + ' ') + upper).split(' '), function(i, property) {
+		(property + ' ' + prefixes.join(upper + ' ') + upper).split(' ').each(function(property) {
 			if (style[property] !== undefined) {
 				result = prefixed ? property : true;
 				return false;

@@ -48,11 +48,11 @@
 						i = ((settings.center && n * -1) || 0),
 						position = ((e.property && e.property.value) || this._core.current()) + i,
 						clones = this._core.clones().length,
-						load = (function(i, v) { this.load(v) }).bind(this);
+						load = (function(v) { this.load(v) }).bind(this);
 
 					while (i++ < n) {
 						this.load(clones / 2 + this._core.relative(position));
-						clones && $.each(this._core.clones(this._core.relative(position)), load);
+						clones && Array.prototype.each.call(this._core.clones(this._core.relative(position)), load);
 						position++;
 					}
 				}
