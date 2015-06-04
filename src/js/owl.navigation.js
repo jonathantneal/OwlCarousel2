@@ -312,7 +312,7 @@
 	 */
 	Navigation.prototype.current = function() {
 		var current = this._core.relative(this._core.current());
-		return $.grep(this._pages, (function(page, index) {
+		return this._pages.filter((function(page, index) {
 			return page.start <= current && page.end >= current;
 		}).bind(this)).pop();
 	};

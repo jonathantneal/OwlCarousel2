@@ -569,7 +569,7 @@
 			cache = {};
 
 		while (i < n) {
-			if (this._invalidated.all || $.grep(this._pipe[i].filter, filter).length > 0) {
+			if (this._invalidated.all || this._pipe[i].filter.filter(filter).length > 0) {
 				this._pipe[i].run(cache);
 			}
 			i++;
@@ -1462,7 +1462,7 @@
 		var status = {
 			item: { count: this._items.length, index: this.current() }
 		}, handler = (
-			$.grep([ 'on', name, namespace ], function(v) { return v })
+			[ 'on', name, namespace ].filter(function(v) { return v })
 				.join('-').toLowerCase()
 				.replace(/-([a-z])/g, function (all, letter) {
 					return letter.toUpperCase();
@@ -1542,7 +1542,7 @@
 				this._states.tags[object.name] = this._states.tags[object.name].concat(object.tags);
 			}
 
-			this._states.tags[object.name] = $.grep(this._states.tags[object.name], (function(tag, i) {
+			this._states.tags[object.name] = this._states.tags[object.name].filter((function(tag, i) {
 				return tag.indexOf(this._states.tags[object.name]) === i;
 			}).bind(this));
 		}
