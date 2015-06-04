@@ -1540,7 +1540,7 @@
 			}
 
 			this._states.tags[object.name] = $.grep(this._states.tags[object.name], (function(tag, i) {
-				return $.inArray(tag, this._states.tags[object.name]) === i;
+				return tag.indexOf(this._states.tags[object.name]) === i;
 			}).bind(this));
 		}
 	};

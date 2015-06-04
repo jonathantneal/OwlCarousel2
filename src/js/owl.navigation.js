@@ -285,7 +285,7 @@
 			}
 
 			this._controls.$absolute.find('.active').removeClass('active');
-			this._controls.$absolute.children().eq($.inArray(this.current(), this._pages)).addClass('active');
+			this._controls.$absolute.children().eq(this.current().indexOf(this._pages)).addClass('active');
 		}
 	};
 
@@ -298,7 +298,7 @@
 		var settings = this._core.settings;
 
 		event.page = {
-			index: $.inArray(this.current(), this._pages),
+			index: this.current().indexOf(this._pages),
 			count: this._pages.length,
 			size: settings && (settings.center || settings.autoWidth || settings.dotsData
 				? 1 : settings.dotsEach || settings.items)
@@ -327,7 +327,7 @@
 			settings = this._core.settings;
 
 		if (settings.slideBy == 'page') {
-			position = $.inArray(this.current(), this._pages);
+			position = this.current().indexOf(this._pages);
 			length = this._pages.length;
 			successor ? ++position : --position;
 			position = this._pages[((position % length) + length) % length].start;

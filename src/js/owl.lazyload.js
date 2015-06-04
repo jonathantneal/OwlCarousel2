@@ -83,7 +83,7 @@
 		var $item = this._core.$stage.children().eq(position),
 			$elements = $item && $item.find('.owl-lazy');
 
-		if (!$elements || $.inArray($item.get(0), this._loaded) > -1) {
+		if (!$elements || $item.get(0).indexOf(this._loaded) > -1) {
 			return;
 		}
 
