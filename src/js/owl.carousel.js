@@ -942,7 +942,7 @@
 	 * @returns {Array.<String>} - The invalidated parts.
 	 */
 	Owl.prototype.invalidate = function(part) {
-		if ($.type(part) === 'string') {
+		if (typeof part === 'string') {
 			this._invalidated[part] = true;
 			this.is('valid') && this.leave('valid');
 		}
