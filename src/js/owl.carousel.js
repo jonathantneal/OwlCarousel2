@@ -1461,9 +1461,12 @@
 	Owl.prototype.trigger = function(name, data, namespace, state, enter) {
 		var status = {
 			item: { count: this._items.length, index: this.current() }
-		}, handler = $.camelCase(
+		}, handler = (
 			$.grep([ 'on', name, namespace ], function(v) { return v })
 				.join('-').toLowerCase()
+				.replace(/-([a-z])/g, function (all, letter) {
+					return letter.toUpperCase();
+				})
 		), event = $.Event(
 			[ name, 'owl', namespace || 'carousel' ].join('.').toLowerCase(),
 			Object.assign({ relatedTarget: this }, status, data)
