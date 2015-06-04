@@ -58,7 +58,7 @@
 			'changed.owl.carousel': (function(e) {
 				if (e.namespace && e.property.name === 'position') {
 					var current = this._core.items(this._core.relative(this._core.current())),
-						hash = $.map(this._hashes, function(item, hash) {
+						hash = Array.prototype.map.call(this._hashes, function(item, hash) {
 							return item === current ? hash : null;
 						}).join();
 

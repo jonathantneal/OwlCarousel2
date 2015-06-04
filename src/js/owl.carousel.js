@@ -946,7 +946,7 @@
 			this._invalidated[part] = true;
 			this.is('valid') && this.leave('valid');
 		}
-		return $.map(this._invalidated, function(v, i) { return i });
+		return Array.prototype.map.call(this._invalidated, function(v, i) { return i });
 	};
 
 	/**
@@ -1087,10 +1087,10 @@
 			map = function(index) { return index % 2 === 0 ? even + index / 2 : odd - (index + 1) / 2 };
 
 		if (position === undefined) {
-			return $.map(this._clones, function(v, i) { return map(i) });
+			return Array.prototype.map.call(this._clones, function(v, i) { return map(i) });
 		}
 
-		return $.map(this._clones, function(v, i) { return v === position ? map(i) : null });
+		return Array.prototype.map.call(this._clones, function(v, i) { return v === position ? map(i) : null });
 	};
 
 	/**
@@ -1118,7 +1118,7 @@
 		var coordinate = null;
 
 		if (position === undefined) {
-			return $.map(this._coordinates, (function(coordinate, index) {
+			return Array.prototype.map.call(this._coordinates, (function(coordinate, index) {
 				return this.coordinates(index);
 			}).bind(this));
 		}
