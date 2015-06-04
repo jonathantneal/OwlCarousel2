@@ -18,7 +18,7 @@
     "disallowTrailingWhitespace": true,
 
     "requireSpacesInsideObjectBrackets": "all",
-    "requireSpacesInsideArrayBrackets": "all",
+    "requireSpacesInsideArrayBrackets": false,
 
     "requireSpacesInConditionalExpression": true,
     "requireSpaceBeforeBinaryOperators": [

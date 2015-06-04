@@ -113,7 +113,7 @@
 		};
 
 		// set default options
-		this._core.options = $.extend({}, Navigation.Defaults, this._core.options);
+		this._core.options = Object.assign({}, Navigation.Defaults, this._core.options);
 
 		// register event handlers
 		this.$element.on(this._handlers);

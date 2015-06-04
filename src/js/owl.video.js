@@ -75,7 +75,7 @@
 		};
 
 		// set default options
-		this._core.options = $.extend({}, Video.Defaults, this._core.options);
+		this._core.options = Object.assign({}, Video.Defaults, this._core.options);
 
 		// register event handlers
 		this._core.$element.on(this._handlers);

@@ -72,7 +72,7 @@
 		};
 
 		// set default options
-		this._core.options = $.extend({}, Hash.Defaults, this._core.options);
+		this._core.options = Object.assign({}, Hash.Defaults, this._core.options);
 
 		// register the event handlers
 		this.$element.on(this._handlers);

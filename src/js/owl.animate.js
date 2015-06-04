@@ -13,7 +13,7 @@
 	 */
 	var Animate = function(scope) {
 		this.core = scope;
-		this.core.options = $.extend({}, Animate.Defaults, this.core.options);
+		this.core.options = Object.assign({}, Animate.Defaults, this.core.options);
 		this.swapping = true;
 		this.previous = undefined;
 		this.next = undefined;

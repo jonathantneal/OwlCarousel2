@@ -30,7 +30,7 @@
 		 * Current options set by the caller including defaults.
 		 * @public
 		 */
-		this.options = $.extend({}, Owl.Defaults, options);
+		this.options = Object.assign({}, Owl.Defaults, options);
 
 		/**
 		 * Plugin element.
@@ -500,7 +500,7 @@
 			settings = null;
 
 		if (!overwrites) {
-			settings = $.extend({}, this.options);
+			settings = Object.assign({}, this.options);
 		} else {
 			$.each(overwrites, function(breakpoint) {
 				if (breakpoint <= viewport && breakpoint > match) {
@@ -508,7 +508,7 @@
 				}
 			});
 
-			settings = $.extend({}, this.options, overwrites[match]);
+			settings = Object.assign({}, this.options, overwrites[match]);
 			delete settings.responsive;
 
 			// responsive class
@@ -1466,7 +1466,7 @@
 				.join('-').toLowerCase()
 		), event = $.Event(
 			[ name, 'owl', namespace || 'carousel' ].join('.').toLowerCase(),
-			$.extend({ relatedTarget: this }, status, data)
+			Object.assign({ relatedTarget: this }, status, data)
 		);
 
 		if (!this._supress[name]) {

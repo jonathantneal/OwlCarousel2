@@ -60,7 +60,7 @@
 		};
 
 		// set the default options
-		this._core.options = $.extend({}, Lazy.Defaults, this._core.options);
+		this._core.options = Object.assign({}, Lazy.Defaults, this._core.options);
 
 		// register event handler
 		this._core.$element.on(this._handlers);

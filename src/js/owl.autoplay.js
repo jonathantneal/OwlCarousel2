@@ -78,7 +78,7 @@
 		this._core.$element.on(this._handlers);
 
 		// set default options
-		this._core.options = $.extend({}, Autoplay.Defaults, this._core.options);
+		this._core.options = Object.assign({}, Autoplay.Defaults, this._core.options);
 	};
 
 	/**
