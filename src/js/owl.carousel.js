@@ -982,7 +982,7 @@
 		var n = this._items.length,
 			m = relative ? 0 : this._clones.length;
 
-		if (!$.isNumeric(position) || n < 1) {
+		if (isNaN(parseFloat(position)) || !isFinite(position) || n < 1) {
 			position = undefined;
 		} else if (position < 0 || position >= n + m) {
 			position = ((position - m / 2) % n + n) % n + m / 2;
@@ -1274,7 +1274,7 @@
 			this._mergers.push(item.find('[data-merge]').andSelf('[data-merge]').attr('data-merge') * 1 || 1);
 		}).bind(this));
 
-		this.reset($.isNumeric(this.settings.startPosition) ? this.settings.startPosition : 0);
+		this.reset(isNaN(parseFloat(this.settings.startPosition)) && isFinite(this.settings.startPosition) ? this.settings.startPosition : 0);
 
 		this.invalidate('items');
 	};
