@@ -71,7 +71,7 @@
 		}
 
 		this._visible = this._core.$element.is(':visible');
-		this._interval = window.setInterval($.proxy(this.refresh, this), this._core.settings.autoRefreshInterval);
+		this._interval = window.setInterval(this.refresh.bind(this), this._core.settings.autoRefreshInterval);
 	};
 
 	/**

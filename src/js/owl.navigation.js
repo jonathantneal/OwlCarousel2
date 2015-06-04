@@ -191,7 +191,7 @@
 
 		// override public methods of the carousel
 		for (override in this._overrides) {
-			this._core[override] = $.proxy(this[override], this);
+			this._core[override] = this[override].bind(this);
 		}
 	};
 
@@ -346,7 +346,7 @@
 	 * @param {Number} [speed=false] - The time in milliseconds for the transition.
 	 */
 	Navigation.prototype.next = function(speed) {
-		$.proxy(this._overrides.to, this._core)(this.getPosition(true), speed);
+		this._overrides.to.bind(this._core)(this.getPosition(true), speed);
 	};
 
 	/**
@@ -355,7 +355,7 @@
 	 * @param {Number} [speed=false] - The time in milliseconds for the transition.
 	 */
 	Navigation.prototype.prev = function(speed) {
-		$.proxy(this._overrides.to, this._core)(this.getPosition(false), speed);
+		this._overrides.to.bind(this._core)(this.getPosition(false), speed);
 	};
 
 	/**
@@ -370,9 +370,9 @@
 
 		if (!standard) {
 			length = this._pages.length;
-			$.proxy(this._overrides.to, this._core)(this._pages[((position % length) + length) % length].start, speed);
+			this._overrides.to.bind(this._core)(this._pages[((position % length) + length) % length].start, speed);
 		} else {
-			$.proxy(this._overrides.to, this._core)(position, speed);
+			this._overrides.to.bind(this._core)(position, speed);
 		}
 	};
 

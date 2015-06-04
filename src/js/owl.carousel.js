@@ -154,7 +154,7 @@
 		};
 
 		$.each([ 'onResize', 'onThrottledResize' ], (function(i, handler) {
-			this._handlers[handler] = $.proxy(this[handler], this);
+			this._handlers[handler] = this[handler].bind(this);
 		}).bind(this));
 
 		$.each(Owl.Plugins, (function(key, plugin) {
@@ -165,7 +165,7 @@
 		$.each(Owl.Workers, (function(priority, worker) {
 			this._pipe.push({
 				'filter': worker.filter,
-				'run': $.proxy(worker.run, this)
+				'run': worker.run.bind(this)
 			});
 		}).bind(this));
 
@@ -668,7 +668,7 @@
 	 */
 	Owl.prototype.registerEventHandlers = function() {
 		if ($.support.transition) {
-			this.$stage.on($.support.transition.end + '.owl.core', $.proxy(this.onTransitionEnd, this));
+			this.$stage.on($.support.transition.end + '.owl.core', this.onTransitionEnd.bind(this));
 		}
 
 		if (this.settings.responsive !== false) {
@@ -677,13 +677,13 @@
 
 		if (this.settings.mouseDrag) {
 			this.$element.addClass(this.options.dragClass);
-			this.$stage.on('mousedown.owl.core', $.proxy(this.onDragStart, this));
+			this.$stage.on('mousedown.owl.core', this.onDragStart.bind(this));
 			this.$stage.on('dragstart.owl.core selectstart.owl.core', function() { return false });
 		}
 
 		if (this.settings.touchDrag){
-			this.$stage.on('touchstart.owl.core', $.proxy(this.onDragStart, this));
-			this.$stage.on('touchcancel.owl.core', $.proxy(this.onDragEnd, this));
+			this.$stage.on('touchstart.owl.core', this.onDragStart.bind(this));
+			this.$stage.on('touchcancel.owl.core', this.onDragEnd.bind(this));
 		}
 	};
 
@@ -732,12 +732,12 @@
 		this._drag.stage.current = stage;
 		this._drag.pointer = this.pointer(event);
 
-		$(document).on('mouseup.owl.core touchend.owl.core', $.proxy(this.onDragEnd, this));
+		$(document).on('mouseup.owl.core touchend.owl.core', this.onDragEnd.bind(this));
 
 		$(document).one('mousemove.owl.core touchmove.owl.core', (function(event) {
 			var delta = this.difference(this._drag.pointer, this.pointer(event));
 
-			$(document).on('mousemove.owl.core touchmove.owl.core', $.proxy(this.onDragMove, this));
+			$(document).on('mousemove.owl.core touchmove.owl.core', this.onDragMove.bind(this));
 
 			if (Math.abs(delta.x) < Math.abs(delta.y) && this.is('valid')) {
 				return;
@@ -885,7 +885,7 @@
 		} else if (animate) {
 			this.$stage.animate({
 				left: coordinate + 'px'
-			}, this.speed(), this.settings.fallbackEasing, $.proxy(this.onTransitionEnd, this));
+			}, this.speed(), this.settings.fallbackEasing, this.onTransitionEnd.bind(this));
 		} else {
 			this.$stage.css({
 				left: coordinate + 'px'

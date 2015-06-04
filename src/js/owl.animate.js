@@ -67,7 +67,7 @@
 		this.core.speed(0);
 
 		var left,
-			clear = $.proxy(this.clear, this),
+			clear = this.clear.bind(this),
 			previous = this.core.$stage.children().eq(this.previous),
 			next = this.core.$stage.children().eq(this.next),
 			incoming = this.core.settings.animateIn,
