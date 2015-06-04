@@ -71,28 +71,28 @@
 		 * @type {Object}
 		 */
 		this._handlers = {
-			'prepared.owl.carousel': $.proxy(function(e) {
+			'prepared.owl.carousel': (function(e) {
 				if (e.namespace && this._core.settings.dotsData) {
 					this._templates.push('<div class="' + this._core.settings.dotClass + '">' +
 						$(e.content).find('[data-dot]').andSelf('[data-dot]').attr('data-dot') + '</div>');
 				}
-			}, this),
-			'added.owl.carousel': $.proxy(function(e) {
+			}).bind(this),
+			'added.owl.carousel': (function(e) {
 				if (e.namespace && this._core.settings.dotsData) {
 					this._templates.splice(e.position, 0, this._templates.pop());
 				}
-			}, this),
-			'remove.owl.carousel': $.proxy(function(e) {
+			}).bind(this),
+			'remove.owl.carousel': (function(e) {
 				if (e.namespace && this._core.settings.dotsData) {
 					this._templates.splice(e.position, 1);
 				}
-			}, this),
-			'changed.owl.carousel': $.proxy(function(e) {
+			}).bind(this),
+			'changed.owl.carousel': (function(e) {
 				if (e.namespace && e.property.name == 'position') {
 					this.draw();
 				}
-			}, this),
-			'initialized.owl.carousel': $.proxy(function(e) {
+			}).bind(this),
+			'initialized.owl.carousel': (function(e) {
 				if (e.namespace && !this._initialized) {
 					this._core.trigger('initialize', null, 'navigation');
 					this.initialize();
@@ -101,15 +101,15 @@
 					this._initialized = true;
 					this._core.trigger('initialized', null, 'navigation');
 				}
-			}, this),
-			'refreshed.owl.carousel': $.proxy(function(e) {
+			}).bind(this),
+			'refreshed.owl.carousel': (function(e) {
 				if (e.namespace && this._initialized) {
 					this._core.trigger('refresh', null, 'navigation');
 					this.update();
 					this.draw();
 					this._core.trigger('refreshed', null, 'navigation');
 				}
-			}, this)
+			}).bind(this)
 		};
 
 		// set default options
@@ -158,16 +158,16 @@
 			.addClass(settings.navClass[0])
 			.html(settings.navText[0])
 			.prependTo(this._controls.$relative)
-			.on('click', $.proxy(function(e) {
+			.on('click', (function(e) {
 				this.prev(settings.navSpeed);
-			}, this));
+			}).bind(this));
 		this._controls.$next = $('<' + settings.navElement + '>')
 			.addClass(settings.navClass[1])
 			.html(settings.navText[1])
 			.appendTo(this._controls.$relative)
-			.on('click', $.proxy(function(e) {
+			.on('click', (function(e) {
 				this.next(settings.navSpeed);
-			}, this));
+			}).bind(this));
 
 		// create DOM structure for absolute navigation
 		if (!settings.dotsData) {
@@ -180,14 +180,14 @@
 		this._controls.$absolute = (settings.dotsContainer ? $(settings.dotsContainer)
 			: $('<div>').addClass(settings.dotsClass).appendTo(this.$element)).addClass('disabled');
 
-		this._controls.$absolute.on('click', 'div', $.proxy(function(e) {
+		this._controls.$absolute.on('click', 'div', (function(e) {
 			var index = $(e.target).parent().is(this._controls.$absolute)
 				? $(e.target).index() : $(e.target).parent().index();
 
 			e.preventDefault();
 
 			this.to(index, settings.dotsSpeed);
-		}, this));
+		}).bind(this));
 
 		// override public methods of the carousel
 		for (override in this._overrides) {
@@ -312,9 +312,9 @@
 	 */
 	Navigation.prototype.current = function() {
 		var current = this._core.relative(this._core.current());
-		return $.grep(this._pages, $.proxy(function(page, index) {
+		return $.grep(this._pages, (function(page, index) {
 			return page.start <= current && page.end >= current;
-		}, this)).pop();
+		}).bind(this)).pop();
 	};
 
 	/**

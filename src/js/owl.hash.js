@@ -39,12 +39,12 @@
 		 * @type {Object}
 		 */
 		this._handlers = {
-			'initialized.owl.carousel': $.proxy(function(e) {
+			'initialized.owl.carousel': (function(e) {
 				if (e.namespace && this._core.settings.startPosition === 'URLHash') {
 					$(window).trigger('hashchange.owl.navigation');
 				}
-			}, this),
-			'prepared.owl.carousel': $.proxy(function(e) {
+			}).bind(this),
+			'prepared.owl.carousel': (function(e) {
 				if (e.namespace) {
 					var hash = $(e.content).find('[data-hash]').andSelf('[data-hash]').attr('data-hash');
 
@@ -54,8 +54,8 @@
 
 					this._hashes[hash] = e.content;
 				}
-			}, this),
-			'changed.owl.carousel': $.proxy(function(e) {
+			}).bind(this),
+			'changed.owl.carousel': (function(e) {
 				if (e.namespace && e.property.name === 'position') {
 					var current = this._core.items(this._core.relative(this._core.current())),
 						hash = $.map(this._hashes, function(item, hash) {
@@ -68,7 +68,7 @@
 
 					window.location.hash = hash;
 				}
-			}, this)
+			}).bind(this)
 		};
 
 		// set default options
@@ -78,7 +78,7 @@
 		this.$element.on(this._handlers);
 
 		// register event listener for hash navigation
-		$(window).on('hashchange.owl.navigation', $.proxy(function(e) {
+		$(window).on('hashchange.owl.navigation', (function(e) {
 			var hash = window.location.hash.substring(1),
 				items = this._core.$stage.children(),
 				position = this._hashes[hash] && items.index(this._hashes[hash]);
@@ -88,7 +88,7 @@
 			}
 
 			this._core.to(this._core.relative(position), false, true);
-		}, this));
+		}).bind(this));
 	};
 
 	/**

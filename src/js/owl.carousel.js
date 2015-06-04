@@ -153,21 +153,21 @@
 			}
 		};
 
-		$.each([ 'onResize', 'onThrottledResize' ], $.proxy(function(i, handler) {
+		$.each([ 'onResize', 'onThrottledResize' ], (function(i, handler) {
 			this._handlers[handler] = $.proxy(this[handler], this);
-		}, this));
+		}).bind(this));
 
-		$.each(Owl.Plugins, $.proxy(function(key, plugin) {
+		$.each(Owl.Plugins, (function(key, plugin) {
 			this._plugins[key.charAt(0).toLowerCase() + key.slice(1)]
 				= new plugin(this);
-		}, this));
+		}).bind(this));
 
-		$.each(Owl.Workers, $.proxy(function(priority, worker) {
+		$.each(Owl.Workers, (function(priority, worker) {
 			this._pipe.push({
 				'filter': worker.filter,
 				'run': $.proxy(worker.run, this)
 			});
-		}, this));
+		}).bind(this));
 
 		this.setup();
 		this.initialize();
@@ -565,7 +565,7 @@
 	Owl.prototype.update = function() {
 		var i = 0,
 			n = this._pipe.length,
-			filter = $.proxy(function(p) { return this[p] }, this._invalidated),
+			filter = (function(p) { return this[p] }).bind(this._invalidated),
 			cache = {};
 
 		while (i < n) {
@@ -734,7 +734,7 @@
 
 		$(document).on('mouseup.owl.core touchend.owl.core', $.proxy(this.onDragEnd, this));
 
-		$(document).one('mousemove.owl.core touchmove.owl.core', $.proxy(function(event) {
+		$(document).one('mousemove.owl.core touchmove.owl.core', (function(event) {
 			var delta = this.difference(this._drag.pointer, this.pointer(event));
 
 			$(document).on('mousemove.owl.core touchmove.owl.core', $.proxy(this.onDragMove, this));
@@ -747,7 +747,7 @@
 
 			this.enter('dragging');
 			this.trigger('drag');
-		}, this));
+		}).bind(this));
 	};
 
 	/**
@@ -838,7 +838,7 @@
 
 		if (!this.settings.freeDrag) {
 			// check closest item
-			$.each(coordinates, $.proxy(function(index, value) {
+			$.each(coordinates, (function(index, value) {
 				if (coordinate > value - pull && coordinate < value + pull) {
 					position = index;
 				} else if (this.op(coordinate, '<', value)
@@ -846,7 +846,7 @@
 					position = direction === 'left' ? index + 1 : index;
 				}
 				return position === -1;
-			}, this));
+			}).bind(this));
 		}
 
 		if (!this.settings.loop) {
@@ -1118,9 +1118,9 @@
 		var coordinate = null;
 
 		if (position === undefined) {
-			return $.map(this._coordinates, $.proxy(function(coordinate, index) {
+			return $.map(this._coordinates, (function(coordinate, index) {
 				return this.coordinates(index);
-			}, this));
+			}).bind(this));
 		}
 
 		if (this.settings.center) {
@@ -1267,12 +1267,12 @@
 
 		content.filter(function() {
 			return this.nodeType === 1;
-		}).each($.proxy(function(index, item) {
+		}).each((function(index, item) {
 			item = this.prepare(item);
 			this.$stage.append(item);
 			this._items.push(item);
 			this._mergers.push(item.find('[data-merge]').andSelf('[data-merge]').attr('data-merge') * 1 || 1);
-		}, this));
+		}).bind(this));
 
 		this.reset($.isNumeric(this.settings.startPosition) ? this.settings.startPosition : 0);
 
@@ -1344,16 +1344,16 @@
 	 * @protected
 	 */
 	Owl.prototype.preloadAutoWidthImages = function(images) {
-		images.each($.proxy(function(i, element) {
+		images.each((function(i, element) {
 			this.enter('pre-loading');
 			element = $(element);
-			$(new Image()).one('load', $.proxy(function(e) {
+			$(new Image()).one('load', (function(e) {
 				element.attr('src', e.target.src);
 				element.css('opacity', 1);
 				this.leave('pre-loading');
 				!this.is('pre-loading') && !this.is('initializing') && this.refresh();
-			}, this)).attr('src', element.attr('src') || element.attr('data-src') || element.attr('data-src-retina'));
-		}, this));
+			}).bind(this)).attr('src', element.attr('src') || element.attr('data-src') || element.attr('data-src-retina'));
+		}).bind(this));
 	};
 
 	/**
@@ -1492,13 +1492,13 @@
 	 * @param name - The state name.
 	 */
 	Owl.prototype.enter = function(name) {
-		$.each([ name ].concat(this._states.tags[name] || []), $.proxy(function(i, name) {
+		$.each([ name ].concat(this._states.tags[name] || []), (function(i, name) {
 			if (this._states.current[name] === undefined) {
 				this._states.current[name] = 0;
 			}
 
 			this._states.current[name]++;
-		}, this));
+		}).bind(this));
 	};
 
 	/**
@@ -1506,9 +1506,9 @@
 	 * @param name - The state name.
 	 */
 	Owl.prototype.leave = function(name) {
-		$.each([ name ].concat(this._states.tags[name] || []), $.proxy(function(i, name) {
+		$.each([ name ].concat(this._states.tags[name] || []), (function(i, name) {
 			this._states.current[name]--;
-		}, this));
+		}).bind(this));
 	};
 
 	/**
@@ -1539,9 +1539,9 @@
 				this._states.tags[object.name] = this._states.tags[object.name].concat(object.tags);
 			}
 
-			this._states.tags[object.name] = $.grep(this._states.tags[object.name], $.proxy(function(tag, i) {
+			this._states.tags[object.name] = $.grep(this._states.tags[object.name], (function(tag, i) {
 				return $.inArray(tag, this._states.tags[object.name]) === i;
-			}, this));
+			}).bind(this));
 		}
 	};
 
@@ -1551,9 +1551,9 @@
 	 * @param {Array.<String>} events - The events to suppress.
 	 */
 	Owl.prototype.suppress = function(events) {
-		$.each(events, $.proxy(function(index, event) {
+		$.each(events, (function(index, event) {
 			this._supress[event] = true;
-		}, this));
+		}).bind(this));
 	};
 
 	/**
@@ -1562,9 +1562,9 @@
 	 * @param {Array.<String>} events - The events to release.
 	 */
 	Owl.prototype.release = function(events) {
-		$.each(events, $.proxy(function(index, event) {
+		$.each(events, (function(index, event) {
 			delete this._supress[event];
-		}, this));
+		}).bind(this));
 	};
 
 	/**
@@ -1629,13 +1629,13 @@
 					'next', 'prev', 'to', 'destroy', 'refresh', 'replace', 'add', 'remove'
 				], function(i, event) {
 					data.register({ type: Owl.Type.Event, name: event });
-					data.$element.on(event + '.owl.carousel.core', $.proxy(function(e) {
+					data.$element.on(event + '.owl.carousel.core', (function(e) {
 						if (e.namespace && e.relatedTarget !== this) {
 							this.suppress([ event ]);
 							data[event].apply(this, [].slice.call(arguments, 1));
 							this.release([ event ]);
 						}
-					}, data));
+					}).bind(data));
 				});
 			}
 

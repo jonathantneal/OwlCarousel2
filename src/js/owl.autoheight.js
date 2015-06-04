@@ -25,22 +25,22 @@
 		 * @type {Object}
 		 */
 		this._handlers = {
-			'initialized.owl.carousel refreshed.owl.carousel': $.proxy(function(e) {
+			'initialized.owl.carousel refreshed.owl.carousel': (function(e) {
 				if (e.namespace && this._core.settings.autoHeight) {
 					this.update();
 				}
-			}, this),
-			'changed.owl.carousel': $.proxy(function(e) {
+			}).bind(this),
+			'changed.owl.carousel': (function(e) {
 				if (e.namespace && this._core.settings.autoHeight && e.property.name == 'position'){
 					this.update();
 				}
-			}, this),
-			'loaded.owl.lazy': $.proxy(function(e) {
+			}).bind(this),
+			'loaded.owl.lazy': (function(e) {
 				if (e.namespace && this._core.settings.autoHeight
 					&& e.element.closest('.' + this._core.settings.itemClass).index() === this._core.current()) {
 					this.update();
 				}
-			}, this)
+			}).bind(this)
 		};
 
 		// set default options

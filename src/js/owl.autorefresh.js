@@ -39,11 +39,11 @@
 		 * @type {Object}
 		 */
 		this._handlers = {
-			'initialized.owl.carousel': $.proxy(function(e) {
+			'initialized.owl.carousel': (function(e) {
 				if (e.namespace && this._core.settings.autoRefresh) {
 					this.watch();
 				}
-			}, this)
+			}).bind(this)
 		};
 
 		// set default options

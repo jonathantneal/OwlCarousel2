@@ -19,22 +19,22 @@
 		this.next = undefined;
 
 		this.handlers = {
-			'change.owl.carousel': $.proxy(function(e) {
+			'change.owl.carousel': (function(e) {
 				if (e.namespace && e.property.name == 'position') {
 					this.previous = this.core.current();
 					this.next = e.property.value;
 				}
-			}, this),
-			'drag.owl.carousel dragged.owl.carousel translated.owl.carousel': $.proxy(function(e) {
+			}).bind(this),
+			'drag.owl.carousel dragged.owl.carousel translated.owl.carousel': (function(e) {
 				if (e.namespace) {
 					this.swapping = e.type == 'translated';
 				}
-			}, this),
-			'translate.owl.carousel': $.proxy(function(e) {
+			}).bind(this),
+			'translate.owl.carousel': (function(e) {
 				if (e.namespace && this.swapping && (this.core.options.animateOut || this.core.options.animateIn)) {
 					this.swap();
 				}
-			}, this)
+			}).bind(this)
 		};
 
 		this.core.$element.on(this.handlers);

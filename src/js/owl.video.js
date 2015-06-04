@@ -40,27 +40,27 @@
 		 * @type {Object}
 		 */
 		this._handlers = {
-			'initialized.owl.carousel': $.proxy(function(e) {
+			'initialized.owl.carousel': (function(e) {
 				if (e.namespace) {
 					this._core.register({ type: 'state', name: 'playing', tags: [ 'interacting' ] });
 				}
-			}, this),
-			'resize.owl.carousel': $.proxy(function(e) {
+			}).bind(this),
+			'resize.owl.carousel': (function(e) {
 				if (e.namespace && this._core.settings.video && this.isInFullScreen()) {
 					e.preventDefault();
 				}
-			}, this),
-			'refreshed.owl.carousel': $.proxy(function(e) {
+			}).bind(this),
+			'refreshed.owl.carousel': (function(e) {
 				if (e.namespace && this._core.is('resizing')) {
 					this._core.$stage.find('.cloned .owl-video-frame').remove();
 				}
-			}, this),
-			'changed.owl.carousel': $.proxy(function(e) {
+			}).bind(this),
+			'changed.owl.carousel': (function(e) {
 				if (e.namespace && e.property.name === 'position' && this._playing) {
 					this.stop();
 				}
-			}, this),
-			'prepared.owl.carousel': $.proxy(function(e) {
+			}).bind(this),
+			'prepared.owl.carousel': (function(e) {
 				if (!e.namespace) {
 					return;
 				}
@@ -71,7 +71,7 @@
 					$element.css('display', 'none');
 					this.fetch($element, $(e.content));
 				}
-			}, this)
+			}).bind(this)
 		};
 
 		// set default options
@@ -80,9 +80,9 @@
 		// register event handlers
 		this._core.$element.on(this._handlers);
 
-		this._core.$element.on('click.owl.video', '.owl-video-play-icon', $.proxy(function(e) {
+		this._core.$element.on('click.owl.video', '.owl-video-play-icon', (function(e) {
 			this.play(e);
-		}, this));
+		}).bind(this));
 	};
 
 	/**

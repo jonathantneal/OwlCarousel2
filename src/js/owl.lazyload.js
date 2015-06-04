@@ -33,7 +33,7 @@
 		 * @type {Object}
 		 */
 		this._handlers = {
-			'initialized.owl.carousel change.owl.carousel': $.proxy(function(e) {
+			'initialized.owl.carousel change.owl.carousel': (function(e) {
 				if (!e.namespace) {
 					return;
 				}
@@ -48,7 +48,7 @@
 						i = ((settings.center && n * -1) || 0),
 						position = ((e.property && e.property.value) || this._core.current()) + i,
 						clones = this._core.clones().length,
-						load = $.proxy(function(i, v) { this.load(v) }, this);
+						load = (function(i, v) { this.load(v) }).bind(this);
 
 					while (i++ < n) {
 						this.load(clones / 2 + this._core.relative(position));
@@ -56,7 +56,7 @@
 						position++;
 					}
 				}
-			}, this)
+			}).bind(this)
 		};
 
 		// set the default options
@@ -87,29 +87,29 @@
 			return;
 		}
 
-		$elements.each($.proxy(function(index, element) {
+		$elements.each((function(index, element) {
 			var $element = $(element), image,
 				url = (window.devicePixelRatio > 1 && $element.attr('data-src-retina')) || $element.attr('data-src');
 
 			this._core.trigger('load', { element: $element, url: url }, 'lazy');
 
 			if ($element.is('img')) {
-				$element.one('load.owl.lazy', $.proxy(function() {
+				$element.one('load.owl.lazy', (function() {
 					$element.css('opacity', 1);
 					this._core.trigger('loaded', { element: $element, url: url }, 'lazy');
-				}, this)).attr('src', url);
+				}).bind(this)).attr('src', url);
 			} else {
 				image = new Image();
-				image.onload = $.proxy(function() {
+				image.onload = (function() {
 					$element.css({
 						'background-image': 'url(' + url + ')',
 						'opacity': '1'
 					});
 					this._core.trigger('loaded', { element: $element, url: url }, 'lazy');
-				}, this);
+				}).bind(this);
 				image.src = url;
 			}
-		}, this));
+		}).bind(this));
 
 		this._loaded.push($item.get(0));
 	}

@@ -38,7 +38,7 @@
 		 * @type {Object}
 		 */
 		this._handlers = {
-			'changed.owl.carousel': $.proxy(function(e) {
+			'changed.owl.carousel': (function(e) {
 				if (e.namespace && e.property.name === 'settings') {
 					if (this._core.settings.autoplay) {
 						this.play();
@@ -46,32 +46,32 @@
 						this.stop();
 					}
 				}
-			}, this),
-			'initialized.owl.carousel': $.proxy(function(e) {
+			}).bind(this),
+			'initialized.owl.carousel': (function(e) {
 				if (e.namespace && this._core.settings.autoplay) {
 					this.play();
 				}
-			}, this),
-			'play.owl.autoplay': $.proxy(function(e, t, s) {
+			}).bind(this),
+			'play.owl.autoplay': (function(e, t, s) {
 				if (e.namespace) {
 					this.play(t, s);
 				}
-			}, this),
-			'stop.owl.autoplay': $.proxy(function(e) {
+			}).bind(this),
+			'stop.owl.autoplay': (function(e) {
 				if (e.namespace) {
 					this.stop();
 				}
-			}, this),
-			'mouseover.owl.autoplay': $.proxy(function() {
+			}).bind(this),
+			'mouseover.owl.autoplay': (function() {
 				if (this._core.settings.autoplayHoverPause && this._core.is('rotating')) {
 					this.pause();
 				}
-			}, this),
-			'mouseleave.owl.autoplay': $.proxy(function() {
+			}).bind(this),
+			'mouseleave.owl.autoplay': (function() {
 				if (this._core.settings.autoplayHoverPause && this._core.is('rotating')) {
 					this.play();
 				}
-			}, this)
+			}).bind(this)
 		};
 
 		// register event handlers
@@ -107,12 +107,12 @@
 
 		this._core.enter('rotating');
 
-		this._interval = window.setInterval($.proxy(function() {
+		this._interval = window.setInterval((function() {
 			if (this._paused || this._core.is('busy') || this._core.is('interacting') || document.hidden) {
 				return;
 			}
 			this._core.next(speed || this._core.settings.autoplaySpeed);
-		}, this), timeout || this._core.settings.autoplayTimeout);
+		}).bind(this), timeout || this._core.settings.autoplayTimeout);
 	};
 
 	/**
